@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="ar" dir="rtl" data-theme="obsidian-ink">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>مكتبتي maktabty — قراءة بلا اتصال وتحديث تلقائي</title>
+    <meta
+      name="description"
+      content="منصة كتب رقمية للقراءة الفورية دون اتصال بالإنترنت، تحفظ الكتب وتقدم القراءة محلياً عبر IndexedDB وتحدث المحتوى تلقائياً عبر Service Worker."
+    />
+    <meta property="og:title" content="مكتبتي maktabty" />
+    <meta
+      property="og:description"
+      content="منصة كتب رقمية للقراءة الفورية دون اتصال بالإنترنت عبر IndexedDB و Service Worker بتحديث تلقائي."
+    />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#0B0C0F" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="مكتبتي" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('warraq-active-theme');
+          document.documentElement.setAttribute('data-theme', saved || 'obsidian-ink');
+          var savedLang = localStorage.getItem('warraq-active-language');
+          if (savedLang === 'en' || savedLang === 'ar') {
+            document.documentElement.setAttribute('lang', savedLang);
+            document.documentElement.setAttribute('dir', savedLang === 'en' ? 'ltr' : 'rtl');
+          }
+          var savedIcon = localStorage.getItem('warraq-active-icon');
+          if (savedIcon && /^[a-z0-9-]+$/i.test(savedIcon) && savedIcon !== 'classic-copper') {
+            var iconEl = document.querySelector('link[rel="icon"]');
+            if (iconEl) iconEl.setAttribute('href', '/api/app-icon/' + encodeURIComponent(savedIcon) + '.svg');
+            var appleEl = document.querySelector('link[rel="apple-touch-icon"]');
+            if (appleEl) appleEl.setAttribute('href', '/api/app-icon/' + encodeURIComponent(savedIcon) + '.png?size=180&maskable=1');
+            var manEl = document.querySelector('link[rel="manifest"]');
+            if (manEl) manEl.setAttribute('href', '/api/manifest.webmanifest?icon=' + encodeURIComponent(savedIcon) + (savedLang === 'en' ? '&lang=en' : ''));
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <style>
+      html, body {
+        margin: 0;
+        min-height: 100%;
+        background-color: #0B0C0F;
+        color: #F1F3F7;
+        font-family: 'IBM Plex Sans Arabic', system-ui, -apple-system, sans-serif;
+      }
+      html[data-theme="archival"], html[data-theme="archival"] body { background-color: #FBF9F5; color: #1C1917; }
+      html[data-theme="golden-king"], html[data-theme="golden-king"] body { background-color: #050505; color: #FAF5E8; }
+      html[data-theme="parchment"], html[data-theme="parchment"] body { background-color: #F4ECD8; color: #2D2418; }
+      html[data-theme="botanical"], html[data-theme="botanical"] body { background-color: #F3F6F2; color: #18231C; }
+      html[data-theme="lapis"], html[data-theme="lapis"] body { background-color: #FFFFFF; color: #0F172A; }
+      html[data-theme="ivory-silk"], html[data-theme="ivory-silk"] body { background-color: #FAF8F3; color: #1F1921; }
+      html[data-theme="midnight"], html[data-theme="midnight"] body { background-color: #141312; color: #F2EFE9; }
+      html[data-theme="slate"], html[data-theme="slate"] body { background-color: #0F172A; color: #F1F5F9; }
+      html[data-theme="obsidian-ink"], html[data-theme="obsidian-ink"] body { background-color: #0B0C0F; color: #F1F3F7; }
+      html[data-theme="espresso-study"], html[data-theme="espresso-study"] body { background-color: #16100D; color: #F5ECE2; }
+      html[data-theme="night-pine"], html[data-theme="night-pine"] body { background-color: #0B1410; color: #EAF4EE; }
+      html[data-theme="mamluk-gold"], html[data-theme="mamluk-gold"] body { background-color: #171310; color: #F9F3E6; }
+      html[data-theme="phoenician-marble"], html[data-theme="phoenician-marble"] body { background-color: #FAF4F2; color: #291518; }
+      html[data-theme="damascus-pearl"], html[data-theme="damascus-pearl"] body { background-color: #F4F6F8; color: #131C26; }
+      html[data-theme="andalus-cobalt"], html[data-theme="andalus-cobalt"] body { background-color: #0C1426; color: #EEF2FF; }
+      html[data-theme="emerald-manuscript"], html[data-theme="emerald-manuscript"] body { background-color: #0D1E18; color: #ECFDF5; }
+      html[data-theme="crimson-velvet"], html[data-theme="crimson-velvet"] body { background-color: #13090C; color: #FDF2F4; }
+      html[data-theme="nebula-amethyst"], html[data-theme="nebula-amethyst"] body { background-color: #0E0B1A; color: #F3F0FF; }
+      html[data-theme="abyssal-teal"], html[data-theme="abyssal-teal"] body { background-color: #071418; color: #ECFEFF; }
+      html[data-theme="pharaoh-onyx"], html[data-theme="pharaoh-onyx"] body { background-color: #090A0D; color: #F8F6F0; }
+      #boot-shell {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+        text-align: center;
+        box-sizing: border-box;
+      }
+      .boot-spinner {
+        width: 44px;
+        height: 44px;
+        border-radius: 9999px;
+        border: 3px solid rgba(154, 52, 18, 0.22);
+        border-top-color: #D4AF37;
+        animation: bootSpin 0.9s linear infinite;
+      }
+      @keyframes bootSpin {
+        to { transform: rotate(360deg); }
+      }
+    </style>
+  </head>
+  <body class="app-canvas-bg antialiased selection:bg-[#9A3412]/15 selection:text-[#9A3412]">
+    <div id="root">
+      <div id="boot-shell">
+        <div class="boot-spinner" aria-hidden="true"></div>
+        <h1 style="margin:18px 0 6px;font-size:28px;font-weight:700;">مكتبتي <span style="font-size:18px;opacity:0.8;">maktabty</span></h1>
+        <p id="boot-status" style="margin:0;font-size:13px;opacity:0.72;">جاري تهيئة المكتبة الرقمية...</p>
+        <button
+          id="boot-retry"
+          type="button"
+          onclick="window.__maktabtyHardReload && window.__maktabtyHardReload()"
+          style="display:none;margin-top:18px;padding:10px 22px;border:1px solid rgba(212,175,55,0.55);border-radius:8px;background:#D4AF37;color:#050505;font-size:13px;font-weight:700;cursor:pointer;"
+        >
+          إعادة فتح المكتبة
+        </button>
+      </div>
+    </div>
+    <script>
+      (function () {
+        var RECOVERY_KEY = 'warraq-boot-recovery-at';
+        function clearSwAndCaches() {
+          var jobs = [];
+          try {
+            if ('serviceWorker' in navigator) {
+              jobs.push(
+                navigator.serviceWorker.getRegistrations().then(function (regs) {
+                  return Promise.all(regs.map(function (r) { return r.unregister(); }));
+                })
+              );
+            }
+            if ('caches' in window) {
+              jobs.push(
+                caches.keys().then(function (keys) {
+                  return Promise.all(keys.map(function (k) { return caches.delete(k); }));
+                })
+              );
+            }
+          } catch (e) {}
+          return Promise.all(jobs);
+        }
+
+        window.__maktabtyHardReload = function () {
+          clearSwAndCaches().finally(function () {
+            try {
+              var url = new URL(window.location.href);
+              url.searchParams.set('_r', String(Date.now()));
+              window.location.replace(url.toString());
+            } catch (e) {
+              window.location.reload();
+            }
+          });
+        };
+
+        function triggerAutoRecovery() {
+          if (window.__MAKTABTY_MOUNTED__) return;
+          var now = Date.now();
+          var lastTry = 0;
+          try {
+            lastTry = Number(sessionStorage.getItem(RECOVERY_KEY) || '0');
+          } catch (e) {}
+          if (!lastTry || now - lastTry > 30000) {
+            try { sessionStorage.setItem(RECOVERY_KEY, String(now)); } catch (e) {}
+            window.__maktabtyHardReload();
+            return;
+          }
+          var statusEl = document.getElementById('boot-status');
+          var retryBtn = document.getElementById('boot-retry');
+          if (statusEl) {
+            var isEn = document.documentElement.getAttribute('lang') === 'en';
+            statusEl.textContent = isEn
+              ? 'Loading took longer than expected. Tap below to refresh cleanly.'
+              : 'استغرق الفتح وقتاً أطول من المعتاد. اضغط لإعادة الفتح بشكل سليم.';
+          }
+          if (retryBtn) {
+            var isEnBtn = document.documentElement.getAttribute('lang') === 'en';
+            if (isEnBtn) retryBtn.textContent = 'Reload Library';
+            retryBtn.style.display = 'inline-block';
+          }
+        }
+
+        window.addEventListener('error', function (ev) {
+          if (!window.__MAKTABTY_MOUNTED__ && ev && ev.target && (ev.target.tagName === 'SCRIPT' || ev.target.tagName === 'LINK')) {
+            setTimeout(triggerAutoRecovery, 250);
+          }
+        }, true);
+
+        setTimeout(function () {
+          if (!window.__MAKTABTY_MOUNTED__) {
+            triggerAutoRecovery();
+          }
+        }, 8000);
+      })();
+    </script>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

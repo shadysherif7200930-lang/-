@@ -1,0 +1,12 @@
+{
+  "catalogVersion": 2026112102,
+  "updatedAt": "2026-11-21T15:48:00Z",
+  "libraryName": "مكتبتي maktabty",
+  "sections": ["العلوم", "الأدب", "التاريخ"],
+  "sectionTranslations": {
+    "العلوم": "Science",
+    "الأدب": "Literature",
+    "التاريخ": "History"
+  },
+  "books": []
+}

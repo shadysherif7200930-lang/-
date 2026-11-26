@@ -1,0 +1,6 @@
+{
+  "name": "مكتبة الورّاق الرقمية",
+  "description": "مكتبة كتب رقمية للعرض والقراءة الفورية عبر IndexedDB و Service Worker بتحديث تلقائي.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
